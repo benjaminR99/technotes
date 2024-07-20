@@ -8,7 +8,7 @@ const notesAdapter = createEntityAdapter({
     sortComparer: (a, b) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1
 })
 
-const initialState = notesAdapter.getInitialState()
+const initialState = notesAdapter.getInitialState();
 
 export const notesApiSlice = apiSlice.injectEndpoints({
     endpoints: builder => ({
@@ -20,6 +20,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
                 }
             } ),
             transformResponse: responseData => {
+                console.log(responseData)
                 const loadedNotes = responseData.map(note => {
                     note.id = note._id
                     return note
@@ -85,9 +86,11 @@ export const selectNotesResult = notesApiSlice.endpoints.getNotes.select()
 // creates memoized selector
 const selectNotesData = createSelector(
     selectNotesResult,
-    notesResult => notesResult.data // normalized state object with ids & entities
+    notesResult => {
+        
+       return notesResult.data
+    } // normalized state object with ids & entities
 )
-
 //getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
     selectAll: selectAllNotes,
